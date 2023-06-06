@@ -57,7 +57,7 @@ exec_cmd(
     "curl -L -o qt-everywhere-opensource-src-{}.tar.xz ".format(qt_version)
     + download_link
 )
-exec_cmd("tar -xvf qt-everywhere-opensource-src-{}.tar.xz".format(qt_version))
+exec_cmd("tar -xf qt-everywhere-opensource-src-{}.tar.xz".format(qt_version))
 
 os.chdir("qt-everywhere-src-{}".format(qt_version))
 

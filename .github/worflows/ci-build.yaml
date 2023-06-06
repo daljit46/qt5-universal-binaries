@@ -1,0 +1,39 @@
+name: Build release
+on: [workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run python build
+        run: python3 build.py
+
+      - name: Parse Qt version
+        id: parse_qt_version
+        run: |
+          directory="${{ github.workspace }}"
+          
+          for folder in "$directory"/qt-install-*; do
+              if [[ -d "$folder" ]]; then
+                  version=${folder#"$directory"/qt-install-}
+                  echo "Version: $version"
+                  echo "::set-output name=version::$version"  # Store the version in an output variable
+              fi
+          done
+      
+      - name: Compress install directory
+        run: |
+          version="${{ steps.parse_qt_version.outputs.version }}"
+          directory="${{ github.workspace }}/qt-install-$version"
+          tar -czf qt-install-$version.tar.gz "$directory"
+
+      - name: Upload release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: qt-install-${{ steps.parse_qt_version.outputs.version }}.tar.gz
+          asset_name: qt-install-${{ steps.parse_qt_version.outputs.version }}.tar.gz
+          asset_content_type: application/gzip
+

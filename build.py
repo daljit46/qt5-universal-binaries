@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument(
     "--prefix",
     type=str,
-    default=os.path.join(current_dir, qt_version),
+    default=os.path.join(current_dir, "qt-install-" + qt_version),
     help="The prefix path to install Qt to.",
 )
 parser.add_argument(
@@ -33,6 +33,8 @@ args = parser.parse_args()
 prefix_path = args.prefix
 modules = args.modules.split(" ")
 
+if not os.path.exists(prefix_path):
+    os.makedirs(prefix_path)
 
 # Print the arguments
 print("\n")
@@ -62,6 +64,7 @@ exec_cmd("tar -xvf qt-everywhere-opensource-src-{}.tar.xz".format(qt_version))
 os.chdir("qt-everywhere-src-{}".format(qt_version))
 
 configure_args = [
+    "-prefix " + prefix_path,
     "-opensource",
     "-confirm-license",
     "-release",

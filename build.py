@@ -36,7 +36,6 @@ modules = args.modules.split(" ")
 if not os.path.exists(prefix_path):
     os.makedirs(prefix_path)
 
-# Print the arguments
 print("\n")
 print("Installation path configured to: " + prefix_path)
 print("List of modules to build: " + str(modules))
@@ -60,7 +59,6 @@ exec_cmd(
 )
 exec_cmd("tar -xvf qt-everywhere-opensource-src-{}.tar.xz".format(qt_version))
 
-# Configure the build
 os.chdir("qt-everywhere-src-{}".format(qt_version))
 
 configure_args = [
@@ -123,7 +121,6 @@ for m in all_modules:
     if m not in modules:
         configure_args.append("-skip " + m)
 
-# Run configure
 exec_cmd("./configure " + " ".join(configure_args))
 
 # Build and install the libraries

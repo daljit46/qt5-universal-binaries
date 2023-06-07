@@ -49,7 +49,9 @@ def exec_cmd(cmd):
 
 
 # Download and extract the tarball.
-download_link = "https://download.qt.io/official_releases/qt/5.15/5.15.10/single/qt-everywhere-opensource-src-{}.tar.xz".format(
+download_link = "https://download.qt.io/official_releases/qt/{}/{}/single/qt-everywhere-opensource-src-{}.tar.xz".format(
+    qt_version[:3],
+    qt_version,
     qt_version
 )
 

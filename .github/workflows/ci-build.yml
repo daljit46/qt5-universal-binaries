@@ -1,8 +1,5 @@
 name: Package
-on: 
-  release:
-    types: [created]
-  workflow_dispatch:
+on: workflow_dispatch
 
 jobs:
   package:
@@ -29,9 +26,11 @@ jobs:
         run: |
           version="${{ steps.parse_qt_version.outputs.version }}"
           directory="${{ github.workspace }}/qt-install-$version"
-          tar -czf qt-install-$version.tar.gz "$directory"
+          tar -czf qt-$version-macos-universal.tar.gz "$directory"
 
       - name: Upload release  
         uses: ncipollo/release-action@v1
         with:
-          artifacts: qt-install-*.tar.gz
+          tag: ${{ steps.parse_qt_version.outputs.version }}
+          commit: ${{ github.sha }}
+          artifacts: qt-*.tar.gz

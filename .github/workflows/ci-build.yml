@@ -27,8 +27,7 @@ jobs:
       - name: Compress install directory
         run: |
           version="${{ steps.parse_qt_version.outputs.version }}"
-          directory="${{ github.workspace }}/qt-install-$version"
-          tar -czf qt-$version-macos-universal.tar.gz "$directory"
+          tar -C ${{ github.workspace }} -czf qt-$version-macos-universal.tar.gz qt-install-$version
 
       - name: Upload release  
         uses: ncipollo/release-action@v1
